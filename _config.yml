@@ -1,0 +1,31 @@
+title: ADR Solutions
+tagline: Specialized parasitology for the problems that matter most
+description: >-
+  ADR Solutions provides antiparasitic drug screening, population-level parasite
+  diagnostics, and novel platform development for the animal health industry —
+  powered by high-throughput pipelines and AI.
+url: "https://theadrsolution.com"
+email: info@theadrsolution.com
+address: 111 Riverbend Rd, Athens, GA 30602
+
+nav:
+  - title: Drug Screening
+    url: /drug-screening/
+  - title: Herd Diagnostics & AR
+    url: /herd-diagnostics/
+  - title: Novel Platforms
+    url: /novel-platforms/
+  - title: About
+    url: /about/
+
+permalink: /:path/
+exclude:
+  - old_website
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - .bundle
+
+plugins:
+  - jekyll-seo-tag

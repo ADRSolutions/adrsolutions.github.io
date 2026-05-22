@@ -1,0 +1,29 @@
+<header class="site-header">
+  <div class="container nav">
+    <a class="nav-logo" href="{{ '/' | relative_url }}" aria-label="ADR Solutions home">
+      <img src="{{ '/assets/img/logo.png' | relative_url }}" alt="ADR Solutions — Animal Diagnostics and Research Solutions, Inc." />
+    </a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-links" id="nav-links">
+      {% for item in site.nav %}
+        {% assign current = page.url | replace:'index.html','' %}
+        {% assign target  = item.url %}
+        <a href="{{ item.url | relative_url }}"{% if current == target %} class="active" aria-current="page"{% endif %}>{{ item.title }}</a>
+      {% endfor %}
+      <a href="{{ '/contact/' | relative_url }}" class="btn btn-primary">Partner with us</a>
+    </nav>
+  </div>
+</header>
+<script>
+  (function(){
+    var t = document.querySelector('.nav-toggle');
+    var l = document.getElementById('nav-links');
+    if(!t||!l) return;
+    t.addEventListener('click', function(){
+      var open = l.classList.toggle('open');
+      t.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  })();
+</script>
