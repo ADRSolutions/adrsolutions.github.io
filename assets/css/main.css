@@ -415,6 +415,12 @@ section.dark .card:hover { border-color: var(--green-300); }
   border-bottom: 1px solid var(--line);
 }
 .bio-img svg { width: 56px; height: 56px; }
+.bio-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .bio-body {
   padding: 1.5rem;
   display: flex;
