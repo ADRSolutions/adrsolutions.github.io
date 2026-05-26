@@ -149,18 +149,21 @@ description: Get in touch with ADR Solutions — separate forms for research and
         btn.textContent = 'Sending…';
         if (status) { status.textContent = ''; status.classList.remove('is-error'); }
 
-        fetch(form.action, { method: 'POST', body: new FormData(form) })
-          .then(function (r) { return r.json().catch(function () { return { ok: false }; }); })
-          .then(function (d) {
-            if (d && d.ok) {
-              form.innerHTML =
-                '<div class="form-success">' +
-                  '<strong>Thanks — your message has been sent.</strong><br/>' +
-                  'We typically respond within two business days.' +
-                '</div>';
-            } else {
-              throw new Error((d && d.error) || 'Submission failed');
-            }
+        // Apps Script Web Apps don't return CORS-readable responses across
+        // origins. We use 'no-cors' (the request still reaches the script,
+        // which writes to the Sheet and emails the team) and treat the lack
+        // of a network error as success.
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          mode: 'no-cors'
+        })
+          .then(function () {
+            form.innerHTML =
+              '<div class="form-success">' +
+                '<strong>Thanks — your message has been sent.</strong><br/>' +
+                'We typically respond within two business days.' +
+              '</div>';
           })
           .catch(function () {
             btn.disabled = false;
