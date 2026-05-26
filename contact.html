@@ -5,6 +5,8 @@ permalink: /contact/
 description: Get in touch with ADR Solutions — separate forms for research and industry partnerships and for herd diagnostic sample submissions.
 ---
 
+{% assign form_endpoint = "https://script.google.com/macros/s/AKfycbxSMS9bGk1dIaZ5-VhEF60vln-zN5ojKErlsWNJ4I-CmvxS_KCG2oFradIQikbWb9LK/exec" %}
+
 <section class="page-hero">
   <div class="container">
     <div class="eyebrow">Contact</div>
@@ -31,7 +33,10 @@ description: Get in touch with ADR Solutions — separate forms for research and
           platform development, or research partnerships.
         </p>
 
-        <form action="mailto:info@theadrsolution.com" method="post" enctype="text/plain">
+        <form data-form action="{{ form_endpoint }}" method="post" novalidate>
+          <input type="hidden" name="form_type" value="partner" />
+          <input type="text" name="website" class="hp-website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
           <div class="row">
             <div>
               <label>First name <span class="req">*</span></label>
@@ -68,6 +73,7 @@ description: Get in touch with ADR Solutions — separate forms for research and
             All inquiries are kept confidential. We typically respond within two business days.
           </p>
 
+          <div class="form-status" role="status" aria-live="polite"></div>
           <button type="submit" class="btn btn-primary mt-1">Submit inquiry →</button>
         </form>
       </div>
@@ -92,7 +98,10 @@ description: Get in touch with ADR Solutions — separate forms for research and
           <a href="https://vet.uga.edu/diagnostic-service-labs/athens-veterinary-diagnostic-laboratory/" target="_blank" rel="noopener">UGA Athens Veterinary Diagnostic Laboratory</a>.
         </div>
 
-        <form action="mailto:info@theadrsolution.com" method="post" enctype="text/plain">
+        <form data-form action="{{ form_endpoint }}" method="post" novalidate>
+          <input type="hidden" name="form_type" value="sample" />
+          <input type="text" name="website" class="hp-website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
           <div class="row">
             <div>
               <label>First name <span class="req">*</span></label>
@@ -116,6 +125,7 @@ description: Get in touch with ADR Solutions — separate forms for research and
           <label>How can we help?</label>
           <textarea name="message" placeholder="Briefly describe your situation and what you'd like tested."></textarea>
 
+          <div class="form-status" role="status" aria-live="polite"></div>
           <button type="submit" class="btn btn-primary mt-1">Submit request →</button>
         </form>
       </div>
@@ -123,3 +133,44 @@ description: Get in touch with ADR Solutions — separate forms for research and
     </div>
   </div>
 </section>
+
+<script>
+  (function () {
+    var forms = document.querySelectorAll('form[data-form]');
+    forms.forEach(function (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+
+        var btn = form.querySelector('button[type="submit"]');
+        var status = form.querySelector('.form-status');
+        var origText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        if (status) { status.textContent = ''; status.classList.remove('is-error'); }
+
+        fetch(form.action, { method: 'POST', body: new FormData(form) })
+          .then(function (r) { return r.json().catch(function () { return { ok: false }; }); })
+          .then(function (d) {
+            if (d && d.ok) {
+              form.innerHTML =
+                '<div class="form-success">' +
+                  '<strong>Thanks — your message has been sent.</strong><br/>' +
+                  'We typically respond within two business days.' +
+                '</div>';
+            } else {
+              throw new Error((d && d.error) || 'Submission failed');
+            }
+          })
+          .catch(function () {
+            btn.disabled = false;
+            btn.textContent = origText;
+            if (status) {
+              status.textContent = 'Something went wrong. Please email info@theadrsolution.com directly.';
+              status.classList.add('is-error');
+            }
+          });
+      });
+    });
+  })();
+</script>

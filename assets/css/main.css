@@ -710,6 +710,31 @@ input:focus, select:focus, textarea:focus {
 }
 textarea { min-height: 120px; resize: vertical; }
 
+/* Honeypot — visible to bots, hidden from users and screen readers */
+.hp-website {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none;
+}
+.form-status {
+  margin-top: .75rem;
+  font-size: .9rem;
+  color: var(--ink-2);
+  min-height: 1.25em;
+}
+.form-status.is-error { color: #b34040; }
+.form-success {
+  background: var(--cream-2);
+  border: 1px solid var(--green-300);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  color: var(--green-900);
+  line-height: 1.5;
+}
+
 /* --- Footer ---------------------------------------------- */
 
 .site-footer {
